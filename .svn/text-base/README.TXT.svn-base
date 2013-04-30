@@ -1,0 +1,13 @@
+Extra Credit:
+Added 2 classes:
+1.	ListPlayList - lists all the playlists and contains methods to show them.
+2.  Playlist - a list of songs that are picked by the user. 
+
+Modified 3 classes:
+1.  UI - added a sub-menu for playlists
+2.  FileBrowser - added functions for the sub-menu for playlists.
+3.  SongPlayer - added methods to handle going through a playlist and play the songs in it.
+	
+Note:
+1.  Add songs don't work
+2.  Delete songs don't work

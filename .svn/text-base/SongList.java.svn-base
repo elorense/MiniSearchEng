@@ -1,0 +1,60 @@
+import java.util.ArrayList;
+
+
+public class SongList extends ArrayList<Song> {
+	private static final long serialVersionUID = 1L;
+
+	public SongList() {
+
+	}
+
+	public void sortByTitle(){
+		for (int i = this.size() - 1; i >= 0; i--) {
+			Song max = this.get(i);
+			for (int j = i; j >= 0; j--) {
+				try {
+					if (max.getTitle().compareToIgnoreCase(this.get(j).getTitle()) > 0) {
+						max = this.get(j);
+					}
+				} catch (Exception e) {
+					i++;
+				}
+			}
+			this.remove(max);
+			this.add(this.size(), max);
+		}
+		print();
+	}
+
+	public void sortByArtist(){
+		for (int i = this.size() - 1; i >= 0; i--) {
+			Song max = this.get(i);
+			for (int j = i; j >= 0; j--) {
+				try {
+					if (max.getArtist()
+							.compareToIgnoreCase(this.get(j).getArtist()) > 0) {
+						max = this.get(j);
+					}
+				} catch (Exception e) {
+					i++;
+				} 
+			}
+			this.remove(max);
+			this.add(this.size(), max);
+		}
+		print();
+	}
+
+	public void print(){
+		System.out.println("--------------------");
+		for (int i = 0; i < this.size(); i++) {
+			try {
+				System.out.println("[" + (i + 1) + "]" + " "
+						+ this.get(i).getTitle() + " - " + this.get(i).getArtist());
+			} catch (Exception e) {
+				i++;
+			} 
+		}
+		System.out.println("--------------------");
+	}
+}

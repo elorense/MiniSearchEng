@@ -1,0 +1,56 @@
+import java.io.IOException;
+import java.util.HashMap;
+
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.tag.TagException;
+
+public class ListPlayList extends HashMap<String, Playlist> {
+	private static final long serialVersionUID = 1L;
+
+	private String name;
+	private Playlist playlist;
+	private Object[] names;
+	
+	
+	public ListPlayList() {
+
+	}
+
+	public void savePlayList(String name, Playlist playlist) {
+		this.name = name;
+		this.playlist = playlist;
+		this.put(name, playlist);
+		this.names = this.keySet().toArray();
+
+	}
+
+	public void showLists()  {
+
+		System.out.println("--------------------");
+		for (int i = 0; i < this.size(); i++) {
+			System.out.println("[" + (i + 1) + "]" + " " + names[i]);
+		}
+		System.out.println("--------------------");
+	}
+
+	public void showSongs(String choice, int listNumber) {
+		System.out.println("--------------------");
+		for (int i = 0; i < this.get(names[listNumber]).size(); i++) {
+			System.out.println("[" + (i + 1) + "]" + " "
+					+ this.get(choice).get(i).getTitle() + " - "
+					+ this.get(choice).get(i).getArtist());
+		}
+		System.out.println("--------------------");
+	}
+
+	public String getKey(int listNumber) {
+		String choice = names[listNumber].toString();
+		return choice;
+	}
+
+	public Playlist getList(String choice, int listNumber) {
+		return this.get(names[listNumber]);
+	}
+}

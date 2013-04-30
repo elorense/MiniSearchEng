@@ -1,0 +1,133 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+import javazoom.jl.decoder.JavaLayerException;
+
+
+public class FileBrowser {
+	private SongList sl;
+	private SongPlayer sp;
+	private boolean playing;
+	private Playlist pl;
+	private ListPlayList lm;
+
+	public FileBrowser() {
+		sl = new SongList();
+		sp = new SongPlayer();
+		pl = new Playlist();
+		lm = new ListPlayList();
+		playing = false;
+	}
+
+	public boolean buildList(String path){
+		File f = new File(path);
+		if (f.isAbsolute()) {
+			buildList(f);
+			return true;
+		}
+		return false;
+	}
+
+	private void buildList(File f){
+		File[] files = f.listFiles();
+		for (int i = 0; i < files.length; i++) {
+			if (files[i].isDirectory()) {
+				buildList(files[i].getAbsolutePath());
+			} else if (files[i].getName().endsWith(".mp3")) {
+				Song s;
+				try {
+					s = new Song(files[i]);
+					sl.add(s);
+				}catch(Exception e){
+					System.out.println("File: " + files[i] + " is broken.");
+				}
+				
+			}
+		}
+	}
+
+	public void viewSongs(){
+		UI ui = new UI();
+		int answer = ui.getChoice();
+		while (answer != 6) {
+			if (answer == 1) {
+				sl.sortByArtist();
+			} else if (answer == 2) {
+				sl.sortByTitle();
+			} else if (answer == 3) {
+				sl.print();
+				if (playing) {
+					sp.stopSong();
+				}
+				playing = true;
+				int choice = ui.songChoice();
+				if (choice <= sl.size() && choice >= 0) {
+					try {
+						sp.playSong(sl.get(choice).getAbsolutePath());
+					} catch (FileNotFoundException e) {
+						System.out.println("Cannot find file");
+					}
+				} else {
+					System.out.println("Invalid choice");
+				}
+			} else if (answer == 4) {
+				sp.stopSong();
+			} else if (answer == 5) {
+				int newAnswer = ui.playListMenu();
+				while (newAnswer != 5) {
+					pl = new Playlist();
+					if (newAnswer == 1) {
+						Scanner scan = new Scanner(System.in);
+						System.out
+								.print("Create a name for your new playlist: ");
+						String name = scan.next();
+						sl.sortByTitle();
+						String rerun = "y";
+						while (rerun.equalsIgnoreCase("y")) {
+							System.out.print("Pick a song to add: ");
+							pl.add(sl.get(scan.nextInt() - 1));
+							System.out
+									.print("Would you like to add more songs? (Y or N): ");
+							rerun = scan.next();
+						}
+						lm.savePlayList(name, pl);
+					} else if (newAnswer == 2) {
+						lm.showLists();
+						int listNumber = ui.playListChoice();
+						lm.getList(lm.getKey(listNumber), listNumber);
+						int editChoice = ui.editListMenu();
+						if(editChoice == 1 || editChoice == 2){
+							System.out.println("Doesn't work");
+						}else if(editChoice == 3){
+							lm.remove(lm.getKey(listNumber));
+						}else if(editChoice == 4){
+							sp.stopSong();
+							System.out.println("Program Ending");
+							System.exit(0);
+						}
+					} else if (newAnswer == 3) {
+						lm.showLists();
+						final int listNumber = ui.playListChoice();
+						lm.showSongs(lm.getKey(listNumber), listNumber);
+					} else if (newAnswer == 4) {
+						lm.showLists();
+						final int listNumber = ui.playListChoice();
+						lm.showSongs(lm.getKey(listNumber), listNumber);
+						playing = true;
+						sp.playListSongs(listNumber, lm);
+						
+					} else if (newAnswer == 6){
+						System.out.println("Program Ending");
+						System.exit(0);
+					}
+					newAnswer = ui.playListMenu();
+					
+				}
+			}
+			answer = ui.getChoice();
+		}
+		sp.stopSong();
+		System.out.println("Program Ending");
+	}
+}

@@ -1,0 +1,97 @@
+import java.util.Scanner;
+
+public class UI {
+
+	public UI() {
+
+	}
+
+	public int getChoice() {
+		Scanner scan = new Scanner(System.in);
+		System.out.println("--------------------");
+		System.out.println("[1] List all sorted by artist");
+		System.out.println("[2] List all sorted by title");
+		System.out.println("[3] Play a song");
+		System.out.println("[4] Stop song");
+		System.out.println("[5] Playlist menu");
+		System.out.println("[6] Exit");
+		System.out.print("Enter choice:");
+		try {
+			int answer = scan.nextInt();
+			if (answer < 7 && answer > 0) {
+				return answer;
+			} else {
+				System.out.println("Invalid choice, please choose again.");
+			}
+		} catch (java.util.InputMismatchException e) {
+			System.out.println("Invalid choice, please choose again");
+		}
+		return getChoice();
+	}
+	public int playListMenu(){
+		Scanner scan = new Scanner(System.in);
+		System.out.println("--------------------");
+		System.out.println("[1] Create new playlist");
+		System.out.println("[2] Edit playlists");
+		System.out.println("[3] Show playlists");
+		System.out.println("[4] Play playlist songs");
+		System.out.println("[5] Return to main menu");
+		System.out.println("[6] Exit");
+		System.out.print("Enter choice:");
+		try {
+			int answer = scan.nextInt();
+			if (answer < 7 && answer > 0) {
+				return answer;
+			} else {
+				System.out.println("Invalid choice, please choose again.");
+			}
+		} catch (java.util.InputMismatchException e) {
+			// e.printStackTrace();
+			System.out.println("Invalid choice, please choose again");
+		}
+		return playListMenu();
+	}
+	public int editListMenu(){
+		Scanner scan = new Scanner(System.in);
+		System.out.println("--------------------");
+		System.out.println("[1] Add new songs");
+		System.out.println("[2] Delete songs");
+		System.out.println("[3] Delete playlist");
+		System.out.println("[4] Return to main menu");
+		System.out.println("[5] Exit");
+		System.out.print("Enter choice:");
+		try {
+			int answer = scan.nextInt();
+			if (answer < 6 && answer > 0) {
+				return answer;
+			} else {
+				System.out.println("Invalid choice, please choose again.");
+			}
+		} catch (java.util.InputMismatchException e) {
+			// e.printStackTrace();
+			System.out.println("Invalid choice, please choose again");
+		}
+		return playListMenu();
+	}
+	
+	public int playListChoice(){
+		Scanner scan = new Scanner(System.in);
+		System.out.print("Pick a playlist to play: ");
+		int listNumber = scan.nextInt() - 1;
+		return listNumber;
+	}
+	public int songChoice() {
+		System.out.print("Choose a song: ");
+		Scanner scan = new Scanner(System.in);
+		int choice = scan.nextInt() - 1;
+		return choice;
+	}
+	
+	public int showListChoice(){
+		Scanner scan = new Scanner(System.in);
+		System.out.print("Pick a playlist: ");
+		int listNumber = scan.nextInt() - 1;
+		return listNumber;
+	}
+
+}

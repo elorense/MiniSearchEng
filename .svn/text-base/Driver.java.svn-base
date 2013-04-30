@@ -1,0 +1,16 @@
+public class Driver {
+
+	public static void main(String[] args) {
+		FileBrowser f = new FileBrowser();
+		f.buildList(args[0]);
+		f.viewSongs();
+//		try{
+//			f.buildList(args[0]);
+//			f.viewSongs();
+//		}catch(Exception e){
+//			System.out.println("Enter a valid path name");
+//
+//		}
+		}
+	}
+

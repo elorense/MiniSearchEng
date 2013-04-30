@@ -1,0 +1,28 @@
+import java.io.IOException;
+import java.util.ArrayList;
+
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.tag.TagException;
+
+
+public class Playlist extends ArrayList<Song> {
+	private static final long serialVersionUID = 1L;
+	public Playlist(){
+		
+	}
+	public void addSong(Song s){
+		this.add(s);
+	}
+	
+	public void showList() throws CannotReadException, IOException,
+			TagException, ReadOnlyFileException, InvalidAudioFrameException {
+		System.out.println("--------------------");
+		for (int i = 0; i < this.size(); i++) {
+			System.out.println("[" + (i + 1) + "]" + " "
+					+ this.get(i).getTitle() + " - " + this.get(i).getArtist());
+		}
+		System.out.println("--------------------");
+	}
+}

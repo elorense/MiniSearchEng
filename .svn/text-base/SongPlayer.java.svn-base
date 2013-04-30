@@ -1,0 +1,76 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
+
+public class SongPlayer {
+	private Player p;
+	private boolean playing;
+	private Playlist pl;
+	private ListPlayList lm;
+	
+	public SongPlayer() {
+		
+	}
+
+	public void playSong(String file) throws FileNotFoundException{
+		FileInputStream f = new FileInputStream(file);
+		try {
+			p = new Player(f);
+		} catch (JavaLayerException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		playing = true;
+		Thread t = new Thread() {
+			public void run() {
+				try {
+						p.play();
+				} catch (JavaLayerException e) {
+					System.out.println("Cannot play song");
+				}
+			}
+		};
+		t.start();
+		System.out.println("--------------------");
+	}
+	public void playListSongs(final int listNumber, final ListPlayList lm){
+			
+			playing = true;
+			Thread t = new Thread() {
+				public void run() {
+					try {
+						for (int i = 0; i < lm.getList(lm.getKey(listNumber), listNumber).size(); i++){
+							FileInputStream f = null;
+							try {
+								f = new FileInputStream(lm.getList(lm.getKey(listNumber), listNumber).get(i).getAbsolutePath());
+							} catch (FileNotFoundException e2) {
+								// TODO Auto-generated catch block
+								System.out.println("Cannot find file");
+							}
+							try {
+								p = new Player(f);
+								p.play();
+							} catch (JavaLayerException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
+					} catch (Exception e) {
+						System.out.println("Cannot play song");
+					}
+				}
+			};
+			t.start();
+			System.out.println("--------------------");
+	
+	}
+	public void stopSong() {
+		if (playing) {
+			p.close();
+		} else {
+			System.out.println("No song is currently playing.");
+		}
+	}
+}
